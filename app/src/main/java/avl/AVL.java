@@ -41,21 +41,50 @@ public class AVL {
   /* insert w into the tree rooted at n, ignoring balance
    * pre: n is not null */
   private void bstInsert(Node n, String w) {
-    // TODO
+   int cmp=w.compareTo(n.word);
+   if (cmp==0){
+    return;
+   }
+   if(cmp<0){
+    if(n.left==null){
+      n.left=new Node(w,n);
+      size++;
+      return;
+    }
+    bstInsert(n.left, w);
+    return;
+   }
+    if(cmp>0){
+    if(n.right==null){
+      n.right=new Node(w,n);
+      size++;
+      return;
+    }
+    bstInsert(n.right, w);
+    return;
+   }
   }
+
 
   /** insert w into the tree, maintaining AVL balance
   *  precondition: the tree is AVL balanced and any prior insertions have been
   *  performed by this method. */
   public void avlInsert(String w) {
-    // TODO
+    avlInsert(root, w);
   }
 
   /* insert w into the tree, maintaining AVL balance
    *  precondition: the tree is AVL balanced and n is not null */
   private void avlInsert(Node n, String w) {
-    // TODO
-  }
+   
+
+    }
+    
+  
+  //https://www.geeksforgeeks.org/dsa/write-a-c-program-to-get-count-of-leaf-nodes-in-a-binary-tree/
+  //thought process is that if n.right has fewer leaf nodes than n.left we can know what side to insert to in avlInsert
+ 
+
 
   /** do a left rotation: rotate on the edge from x to its right child.
   *  precondition: x has a non-null right child */
