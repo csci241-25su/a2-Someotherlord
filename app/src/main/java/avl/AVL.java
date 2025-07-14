@@ -9,7 +9,7 @@ public class AVL {
   public int getSize() {
     return size;
   }
-
+//Joseph Frare
   /** find w in the tree. return the node containing w or
   * null if not found */
   public Node search(String w) {
@@ -70,39 +70,153 @@ public class AVL {
   *  precondition: the tree is AVL balanced and any prior insertions have been
   *  performed by this method. */
   public void avlInsert(String w) {
+      if (root == null) {
+      root = new Node(w);
+      size = 1;
+      return;
+    }
     avlInsert(root, w);
   }
 
   /* insert w into the tree, maintaining AVL balance
    *  precondition: the tree is AVL balanced and n is not null */
   private void avlInsert(Node n, String w) {
-   
-
+    int cmp = w.compareTo(n.word);
+    if(cmp<0){
+    if(n.left==null){
+      n.left=new Node(w,n);
+      size++;
+      
     }
+    else{avlInsert(n.left, w);}
     
-  
-  //https://www.geeksforgeeks.org/dsa/write-a-c-program-to-get-count-of-leaf-nodes-in-a-binary-tree/
-  //thought process is that if n.right has fewer leaf nodes than n.left we can know what side to insert to in avlInsert
- 
+    }
+    else if(cmp>0){
+    if(n.right==null){
+      n.right=new Node(w,n);
+      size++;
+      
+    }
+    else{avlInsert(n.right, w);}
+    
+    }
+    else{return;}
+    updateHeight(n);
+    rebalance(n);
+  }
 
 
   /** do a left rotation: rotate on the edge from x to its right child.
   *  precondition: x has a non-null right child */
   public void leftRotate(Node x) {
-    // TODO
-  }
+    Node y = x.right;
+    Node gamma = y.left;
+    
+    x.right=gamma;
+   
+  
+    if(gamma != null){
+      gamma.parent=x;
+    }
+
+    y.left=x;
+    y.parent=x.parent;
+    if(x.parent==null){
+      root=y;
+    }
+    else if(x.parent.left==x){
+        x.parent.left = y;}
+      else{
+        x.parent.right=y;
+      }
+      x.parent=y;
+      updateHeight(x);
+      updateHeight(y);
+    }
+  
 
   /** do a right rotation: rotate on the edge from x to its left child.
   *  precondition: y has a non-null left child */
   public void rightRotate(Node y) {
-    // TODO
+    if(y==null||y.left==null){return;}
+  
+    Node x =y.left;
+    Node gamma = x.right;
+
+    x.right=y;
+    y.left=gamma;
+
+    x.parent=y.parent;
+
+    if(gamma != null){
+      gamma.parent=y;
+    }
+
+    if(x.parent==null){
+      root=x;
+    }else{
+      if(x.parent.left==y){
+        x.parent.left=x;
+      }
+     else{ x.parent.right=x;
+    }
+    }
+    y.parent=x;
+    updateHeight(y);
+    updateHeight(x);
   }
 
   /** rebalance a node N after a potentially AVL-violoting insertion.
   *  precondition: none of n's descendants violates the AVL property */
   public void rebalance(Node n) {
-    // TODO
+    if(n==null){
+      return;
+    }
+  int leftH =(n.left==null)?-1:    n.left.height;
+     int rightH= (n.right==null)?-1:   n.right.height;
+     int balance=rightH-leftH;
+
+    if(balance<-1){
+      int childBal= getbalance(n.left);
+      if(childBal<=0){
+        rightRotate(n);
+      }
+      else{
+        leftRotate(n.left);
+        rightRotate(n);
+      }
+    }
+    else if(balance>1){
+      int childBal = getbalance(n.right);
+      if(childBal>=0){
+        leftRotate(n);
+      }
+      else{
+        rightRotate(n.right);
+        leftRotate(n);
+    }
+    }
+    updateHeight(n);
+    
+
   }
+  private int getbalance(Node n){
+    if (n==null){
+      return 0;
+    }
+     int leftH =(n.left==null)?-1:    n.left.height;
+     int rightH= (n.right==null)?-1:   n.right.height;
+    return rightH-leftH;
+  }
+  private void updateHeight(Node n){
+        if (n==null){
+      return;
+    }
+     int leftH =(n.left==null)?-1:    n.left.height;
+     int rightH= (n.right==null)?-1:   n.right.height;
+     n.height=1+Math.max(leftH, rightH);
+  }
+
 
   /** remove the word w from the tree */
   public void remove(String w) {
