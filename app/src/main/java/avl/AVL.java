@@ -42,9 +42,11 @@ public class AVL {
    * pre: n is not null */
   private void bstInsert(Node n, String w) {
    int cmp=w.compareTo(n.word);
+   //checks for dups
    if (cmp==0){
     return;
    }
+   
    if(cmp<0){
     if(n.left==null){
       n.left=new Node(w,n);
@@ -82,6 +84,7 @@ public class AVL {
    *  precondition: the tree is AVL balanced and n is not null */
   private void avlInsert(Node n, String w) {
     int cmp = w.compareTo(n.word);
+    //we check the value/word to see what side to recure or place on
     if(cmp<0){
     if(n.left==null){
       n.left=new Node(w,n);
@@ -101,6 +104,7 @@ public class AVL {
     
     }
     else{return;}
+    //cleaning up
     updateHeight(n);
     rebalance(n);
   }

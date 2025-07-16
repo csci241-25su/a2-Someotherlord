@@ -1,7 +1,9 @@
 package avl;
 
 import java.util.Scanner;
+import java.util.Set;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.io.File;
 import java.io.FileNotFoundException;
 public class Unique {
@@ -51,8 +53,11 @@ public class Unique {
 
     /** Return the number of unique lines availble to be read by sc */ 
     private static int avlUnique(Scanner sc) {
-      // TODO - implement this; its runtime should be O(n log n)
-      return 0; // placeholder, so code compiles
+      Set <String> uniqueLines = new HashSet<>();
+      while (sc.hasNextLine()){
+        String Line = sc.nextLine();
+        uniqueLines.add(Line);}
+      return uniqueLines.size(); // placeholder, so code compiles
     }
 
 
